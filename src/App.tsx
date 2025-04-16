@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import chroma from "chroma-js";
+import "./App.css";
+
+const colours = chroma.scale(["#fafa6e", "#2A4858"]).colors(6);
+
+const cssVars = colours.map((hex, i) => {
+  const [h, s, l] = chroma(hex).hsl(); // hue in deg, sat/lum in 0–1
+  return `--chart-${i + 1}: ${h.toFixed(1)} ${(s * 100).toFixed(1)}% ${(
+    l * 100
+  ).toFixed(1)}%;`;
+});
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {cssVars.map((color, i) => (
+        <div key={color} style={{ display: "flex", alignItems: "center" }}>
+          <pre style={{ marginRight: "0.2rem" }}>{color}</pre>
+          <span
+            style={{
+              display: "inline-block",
+              backgroundColor: colours[i],
+              height: "1rem",
+              width: "1rem",
+              borderRadius: "0.2rem",
+            }}
+          />
+        </div>
+      ))}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
